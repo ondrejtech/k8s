@@ -1,0 +1,8 @@
+apiVersion: networking.gke.io/v1beta1
+kind: FrontendConfig
+metadata:
+  name: n8n-frontend-config
+  namespace: n8n
+spec:
+  redirectToHttps:
+    enabled: true

@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-n8n
+  namespace: n8n
+  annotations:
+    kubernetes.io/ingress.class: gce
+    kubernetes.io/ingress.global-static-ip-name: n8n-ip
+    networking.gke.io/managed-certificates: n8n-cert
+    networking.gke.io/v1beta1.frontend-config: n8n-frontend-config
+spec:
+  rules:
+  - host: n8n.multishoping.eu
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: n8n
+            port:
+              number: 5678
