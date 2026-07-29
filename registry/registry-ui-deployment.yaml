@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: registry-ui
+  namespace: registry
+  labels:
+    app: registry-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: registry-ui
+  template:
+    metadata:
+      labels:
+        app: registry-ui
+    spec:
+      nodeSelector:
+        main-pool: "true"
+      containers:
+      - name: registry-ui
+        image: joxit/docker-registry-ui:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: NGINX_PROXY_PASS_URL
+          value: "http://registry:5000"
+        - name: SINGLE_REGISTRY
+          value: "true"
+        - name: REGISTRY_TITLE
+          value: "registry"
+        - name: THEME
+          value: "dark"
+        - name: DELETE_IMAGES
+          value: "true"
+        - name: REGISTRY_SECURED
+          value: "true"
+        - name: SHOW_CONTENT_DIGEST
+          value: "true"
+        - name: SHOW_CATALOG_NB_TAGS
+          value: "true"
+        - name: CATALOG_MIN_BRANCHES
+          value: "1"
+        - name: CATALOG_MAX_BRANCHES
+          value: "1"
+        - name: TAGLIST_PAGE_SIZE
+          value: "100"
+        - name: CATALOG_ELEMENTS_LIMIT
+          value: "1000"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
